@@ -13,13 +13,11 @@ import datetime
 log = logging.getLogger()
 log.setLevel('INFO')
 
-cassandra_hosts = '127.0.0.1'
-kafka_host = "127.0.0.1:9092"
-kafka_topics = 'test'
+class Config(object):
+    cassandra_hosts = '127.0.0.1'
+    kafka_host = "127.0.0.1:9092"
+    kafka_topics = 'test'
 
-kafka_client = KafkaClient(hosts=kafka_host)
-kafka_topic = kafka_client.topics[kafka_topics]
-kafka_producer = kafka_topic.get_producer()
 
 def generate_coupon_data():
     results = []
@@ -142,6 +140,10 @@ class BoundStatementsClient(SimpleClient):
 
     #load actual data like clips and likes of pds and coupons. in this example just households.
     def run_clips(self):
+        #set up kafka producer
+        kafka_client = KafkaClient(hosts=Config.kafka_host)
+        kafka_topic = kafka_client.topics[kafka_topics]
+        kafka_producer = kafka_topic.get_producer()
         for i in range(0,100000):
             for j in range(0,100):
                 row_zip = str(random.randint(90000,90099))
