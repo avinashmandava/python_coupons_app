@@ -13,8 +13,12 @@ import datetime
 log = logging.getLogger()
 log.setLevel('INFO')
 
-kafka_client = KafkaClient(hosts="127.0.0.1:9092")
-kafka_topic = kafka_client.topics['test']
+cassandra_hosts = '127.0.0.1'
+kafka_host = "127.0.0.1:9092"
+kafka_topics = 'test'
+
+kafka_client = KafkaClient(hosts=kafka_host)
+kafka_topic = kafka_client.topics[kafka_topics]
 kafka_producer = kafka_topic.get_producer()
 
 def generate_coupon_data():
@@ -154,7 +158,7 @@ class BoundStatementsClient(SimpleClient):
 def main():
     logging.basicConfig()
     client = BoundStatementsClient()
-    client.connect(['127.0.0.1'])
+    client.connect([cassandra_hosts])
     client.create_schema()
     time.sleep(10)
     client.prepare_statements()
