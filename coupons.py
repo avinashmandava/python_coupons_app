@@ -160,7 +160,7 @@ class BoundStatementsClient(SimpleClient):
 def main():
     logging.basicConfig()
     client = BoundStatementsClient()
-    client.connect([cassandra_hosts])
+    client.connect([Config.cassandra_hosts])
     client.create_schema()
     time.sleep(10)
     client.prepare_statements()
