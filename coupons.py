@@ -34,7 +34,7 @@ def generate_pd_data():
     return results
 
 class SimpleClient(object):
-    
+
 
     #Instantiate a session object to be used to connect to the database.
     session = None
@@ -142,7 +142,7 @@ class BoundStatementsClient(SimpleClient):
     def run_clips(self):
         #set up kafka producer
         kafka_client = KafkaClient(hosts=Config.kafka_host)
-        kafka_topic = kafka_client.topics[kafka_topics]
+        kafka_topic = kafka_client.topics[Config.kafka_topics]
         kafka_producer = kafka_topic.get_producer()
         for i in range(0,100000):
             for j in range(0,100):
@@ -154,7 +154,7 @@ class BoundStatementsClient(SimpleClient):
                     [row_zip,row_offer_id,True,update_time]
                 )
                 kafka_producer.produce([row_offer_id+','+time_string+','+str(1)])
-            time.sleep(1)    
+            time.sleep(1)
 
 
 def main():
@@ -162,7 +162,7 @@ def main():
     client = BoundStatementsClient()
     client.connect([Config.cassandra_hosts])
     client.create_schema()
-    time.sleep(10)
+    time.sleep(1)
     client.prepare_statements()
     client.load_seed_data()
     client.run_clips()
@@ -170,4 +170,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
